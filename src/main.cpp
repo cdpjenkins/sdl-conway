@@ -75,8 +75,11 @@ int main(int argc, char** argv) {
                         break;        
                 }
             }
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
-                quit = true;
+            if (e.type == SDL_MOUSEBUTTONUP) {
+                int cell_x = e.button.x / grid.cell_width;
+                int cell_y = e.button.y / grid.cell_height;
+
+                grid.invert_cell(cell_x, cell_y);
             }
         }
 
