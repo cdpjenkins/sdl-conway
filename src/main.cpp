@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         grid.load_from_file(argv[1]);
     } else {
-        grid.load_from_file("grids/gosper.cwy");
+        grid.load_from_file("gosper.cwy");
     }
 
     grid.run();
