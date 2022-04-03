@@ -63,7 +63,17 @@ int main(int argc, char** argv) {
                 quit = true;
             }
             if (e.type == SDL_KEYDOWN) {
-                quit = true;
+                switch(e.key.keysym.sym) {
+                    case SDLK_q:
+                        quit = true;
+                        break;
+                    case SDLK_r:
+                        grid.run();
+                        break;
+                    case SDLK_p:
+                        grid.pause();
+                        break;        
+                }
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 quit = true;
