@@ -1,8 +1,8 @@
 #ifndef CONWAY_GRID_H
 #define CONWAY_GRID_H
 
-#define GRID_WIDTH 80
-#define GRID_HEIGHT 60
+#define GRID_WIDTH 160
+#define GRID_HEIGHT 120
 #define CELL_WIDTH 8
 #define CELL_HEIGHT 8
 
