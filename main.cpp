@@ -5,9 +5,6 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 400;
-
 void draw_grid_to_surface(SDL_Surface *screenSurface, ConwayGrid *grid) {
     SDL_FillRect(screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ));
     for (int y = 0; y < grid->height; y++) {
@@ -27,8 +24,6 @@ void draw_grid_to_surface(SDL_Surface *screenSurface, ConwayGrid *grid) {
 }
 
 int main(int argc, char** argv) {
-    cout << "Hello World!" << endl;
-
     ConwayGrid grid;
     if (argc > 1) {
         grid.load_from_file(argv[1]);
@@ -44,16 +39,16 @@ int main(int argc, char** argv) {
         throw exception();
     }
 
-    SDL_Window *window = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                        SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN /*| SDL_WINDOW_ALWAYS_ON_TOP */);
+    SDL_Window *window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                        grid.cell_width * grid.width, grid.cell_width * grid.width,
+                                        SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
     if (window == NULL) {
         throw exception();
     }
 
     // this doesn't work and I don't understand why
     SDL_RaiseWindow(window);
-
-    cout << "Window open" << endl;
+    SDL_SetWindowInputFocus(window);
 
     SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 
@@ -64,20 +59,18 @@ int main(int argc, char** argv) {
     bool quit = false;
     while (!quit){
         while (SDL_PollEvent(&e)){
-            if (e.type == SDL_QUIT){
+            if (e.type == SDL_QUIT) {
                 quit = true;
             }
-            if (e.type == SDL_KEYDOWN){
+            if (e.type == SDL_KEYDOWN) {
+                quit = true;
             }
-            if (e.type == SDL_MOUSEBUTTONDOWN){
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
                 quit = true;
             }
         }
 
         grid.step();
-        grid.print();
-
-        cout << "Stepping innit, generation  " << grid.generation << endl;
 
         draw_grid_to_surface(screenSurface, &grid);
         SDL_UpdateWindowSurface(window);
