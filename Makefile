@@ -1,11 +1,22 @@
 CXX=g++
 CXXFLAGS=-arch arm64 -std=c++11
 
-SOURCES=*.cpp *.o
+SOURCES=src/*.cpp src/*.o
+
+all: sdl-conway make-dist
+
+clean:
+	rm -rf dist
+	rm -f src/*.o
+
+make-dist:
+	mkdir -p dist
+	cp grids/*.cwy dist/
+	cp sdl-conway dist/
 
 %.o: %.cpp *.hpp
 	${CXX} -c $(CXXFLAGS) $< -o $@
 
-sdl-conway: main.o ConwayGrid.o
-	g++ $(CXXFLAGS) main.o ConwayGrid.o -o sdl-conway -lSDL2
+sdl-conway: src/main.o src/ConwayGrid.o
+	g++ $(CXXFLAGS) src/main.o src/ConwayGrid.o -o sdl-conway -lSDL2
 
