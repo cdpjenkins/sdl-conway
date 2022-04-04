@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     }
 
     SDL_Window *window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                        grid.cell_width * grid.width, grid.cell_width * grid.width,
+                                        grid.cell_width * grid.width, grid.cell_height * grid.height,
                                         SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
     if (window == NULL) {
         throw exception();
@@ -58,8 +58,6 @@ int main(int argc, char** argv) {
     SDL_SetWindowInputFocus(window);
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    // SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 
     draw_grid_to_surface(renderer, &grid);
     SDL_UpdateWindowSurface(window);
@@ -95,11 +93,11 @@ int main(int argc, char** argv) {
         Uint32 time_before_step = SDL_GetTicks();
         grid.step();
         Uint32 time_after_step_before_draw = SDL_GetTicks();
-        cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
+        // cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
         draw_grid_to_surface(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         Uint32 time_after_draw = SDL_GetTicks();
-        cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
+        // cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
     }
 
     return 0;
