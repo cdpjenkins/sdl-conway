@@ -1,10 +1,10 @@
 #ifndef CONWAY_GRID_H
 #define CONWAY_GRID_H
 
-#define GRID_WIDTH 160
-#define GRID_HEIGHT 120
-#define CELL_WIDTH 4
-#define CELL_HEIGHT 4
+#define GRID_WIDTH 840
+#define GRID_HEIGHT 340
+#define CELL_WIDTH 2
+#define CELL_HEIGHT 2
 
 #define MAX_LINE_LENGTH 1000
 
