@@ -5,22 +5,29 @@
 
 using namespace std;
 
-void draw_grid_to_surface(SDL_Surface *screenSurface, ConwayGrid *grid) {
-    SDL_FillRect(screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ));
+void draw_grid_to_surface(SDL_Renderer *renderer, ConwayGrid *grid) {
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(renderer);
+
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
-            Uint32 colour = grid->cell_alive_at(x, y)
-                            ? SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00)
-                            : SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF);
-            SDL_Rect rectangle = {
-                .x = x * grid->cell_width,
-                .y = y * grid->cell_height,
-                .w = grid->cell_width - 1,
-                .h = grid->cell_height - 1
-            };
-            SDL_FillRect(screenSurface, &rectangle, colour);
+            if (grid->cell_alive_at(x, y)) {
+                SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+
+                SDL_Rect rectangle = {
+                    .x = x * grid->cell_width,
+                    .y = y * grid->cell_height,
+                    .w = grid->cell_width - 1,
+                    .h = grid->cell_height - 1
+                };
+                SDL_RenderFillRect(renderer, &rectangle);
+            } else {
+                // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            }
+
         }
     }
+    SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char** argv) {
@@ -50,9 +57,11 @@ int main(int argc, char** argv) {
     SDL_RaiseWindow(window);
     SDL_SetWindowInputFocus(window);
 
-    SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    draw_grid_to_surface(screenSurface, &grid);
+    // SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+
+    draw_grid_to_surface(renderer, &grid);
     SDL_UpdateWindowSurface(window);
 
     SDL_Event e;
@@ -87,7 +96,7 @@ int main(int argc, char** argv) {
         grid.step();
         Uint32 time_after_step_before_draw = SDL_GetTicks();
         cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
-        draw_grid_to_surface(screenSurface, &grid);
+        draw_grid_to_surface(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         Uint32 time_after_draw = SDL_GetTicks();
         cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
