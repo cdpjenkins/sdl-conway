@@ -1,5 +1,6 @@
 CXX=g++
-CXXFLAGS=-arch arm64 -std=c++11
+CXXFLAGS=-arch arm64 -std=c++11 `sdl2-config --cflags`
+LDFLAGS=`sdl2-config --libs`
 
 SOURCES=src/*.cpp src/*.o
 
@@ -18,5 +19,5 @@ make-dist:
 	${CXX} -c $(CXXFLAGS) $< -o $@
 
 sdl-conway: src/main.o src/ConwayGrid.o
-	g++ $(CXXFLAGS) src/main.o src/ConwayGrid.o -o sdl-conway -lSDL2
+	g++ $(LDFLAGS) $(CXXFLAGS) src/main.o src/ConwayGrid.o -o sdl-conway
 
