@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <SDL2/SDL.h>
 
 #include "ConwayGrid.hpp"
@@ -19,6 +20,7 @@ int main(int argc, char** argv) {
                         4 * grid.width / 2, 4 * grid.height / 2,
                         1);
 
+    SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);
 
     if (rc != 0) {
@@ -78,7 +80,12 @@ int main(int argc, char** argv) {
 
                     grid.invert_cell(cell_x, cell_y);
                     break;
+                case SDL_MULTIGESTURE:
+                    float dDist = e.mgesture.dDist;
 
+                    cout << "pinch " << dDist << endl;
+                    viewport.adjust_zoom(dDist * 10);
+                    break;
             }
 
         }

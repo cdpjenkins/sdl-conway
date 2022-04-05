@@ -1,4 +1,8 @@
+#include <iostream>
+
 #include "Viewport.hpp"
+
+using namespace std;
 
 Viewport::Viewport(float width, float height, float centre_x, float centre_y, float zoom) {
     this->width = width;
@@ -19,10 +23,10 @@ void Viewport::render_grid(SDL_Renderer *renderer, ConwayGrid *grid) {
                 SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
                 SDL_Rect rectangle = {
-                    .x = x * cell_size,
-                    .y = y * cell_size,
-                    .w = cell_size - 1,
-                    .h = cell_size - 1
+                    .x = x * get_cell_size_as_int(),
+                    .y = y * get_cell_size_as_int(),
+                    .w = get_cell_size_as_int() - 1,
+                    .h = get_cell_size_as_int() - 1
                 };
                 SDL_RenderFillRect(renderer, &rectangle);
             }
@@ -41,6 +45,13 @@ void Viewport::zoom_out() {
     }
 }
 
+void Viewport::adjust_zoom(float dDist) {
+    cell_size += dDist;
+    cell_size = fmax(cell_size, 2);
+
+    cout << cell_size << endl;
+}
+
 float Viewport::get_width() {
     return width;
 }
@@ -49,7 +60,7 @@ float Viewport::get_height() {
     return height;
 }
 
-int Viewport::get_cell_size() {
+int Viewport::get_cell_size_as_int() {
     return cell_size;
 }
 
