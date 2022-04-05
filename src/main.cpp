@@ -68,7 +68,10 @@ int main(int argc, char** argv) {
                             break;
                         case SDLK_MINUS:
                             viewport.zoom_out();
-                            break;      
+                            break;
+                        case SDLK_s:
+                            grid.save_to_file("out.cwy");
+                            break;
                     }
                     break;
                 case SDL_MOUSEBUTTONUP:
