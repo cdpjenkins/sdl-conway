@@ -16,7 +16,6 @@ void Viewport::render_grid(SDL_Renderer *renderer, ConwayGrid *grid) {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 
-    int cell_size_to_render = cell_size > 1 ? cell_size - 1 : cell_size;
     float sy = 0;
     for (int y = 0; y < grid->height; y++, sy += cell_size) {
         float sx = 0;
@@ -48,7 +47,7 @@ void Viewport::zoom_out() {
 }
 
 void Viewport::adjust_zoom(float dDist) {
-    cell_size += dDist;
+    cell_size *= (1 + dDist);
     cell_size = fmax(cell_size, 2);
 
     cout << cell_size << endl;

@@ -93,11 +93,11 @@ int main(int argc, char** argv) {
         Uint32 time_before_step = SDL_GetTicks();
         grid.step();
         Uint32 time_after_step_before_draw = SDL_GetTicks();
-        cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
+        // cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
         viewport.render_grid(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         Uint32 time_after_draw = SDL_GetTicks();
-        cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
+        // cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
     }
 
     return 0;
