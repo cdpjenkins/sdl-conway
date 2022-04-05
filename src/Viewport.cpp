@@ -17,16 +17,18 @@ void Viewport::render_grid(SDL_Renderer *renderer, ConwayGrid *grid) {
     SDL_RenderClear(renderer);
 
     int cell_size_to_render = cell_size > 1 ? cell_size - 1 : cell_size;
-    for (int y = 0; y < grid->height; y++) {
-        for (int x = 0; x < grid->width; x++) {
+    float sy = 0;
+    for (int y = 0; y < grid->height; y++, sy += cell_size) {
+        float sx = 0;
+        for (int x = 0; x < grid->width; x++, sx += cell_size) {
             if (grid->cell_alive_at(x, y)) {
                 SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
                 SDL_Rect rectangle = {
-                    .x = x * get_cell_size_as_int(),
-                    .y = y * get_cell_size_as_int(),
-                    .w = get_cell_size_as_int() - 1,
-                    .h = get_cell_size_as_int() - 1
+                    .x = (int)sx,
+                    .y = (int)sy,
+                    .w = (int)(cell_size - 1),
+                    .h = (int)(cell_size - 1)
                 };
                 SDL_RenderFillRect(renderer, &rectangle);
             }
@@ -58,10 +60,6 @@ float Viewport::get_width() {
 
 float Viewport::get_height() {
     return height;
-}
-
-int Viewport::get_cell_size_as_int() {
-    return cell_size;
 }
 
 void Viewport::screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y) {

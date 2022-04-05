@@ -15,7 +15,6 @@ public:
     void adjust_zoom(float dDist);
     float get_width();
     float get_height();
-    int get_cell_size_as_int();
     void screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y);  
 
 private:
