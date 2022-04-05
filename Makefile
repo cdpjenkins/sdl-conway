@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-arch arm64 -std=c++11 `sdl2-config --cflags`
+CXXFLAGS=-arch arm64 -std=c++11 `sdl2-config --cflags | sed -e 's/include\/SDL2/include/'`
 LDFLAGS=`sdl2-config --libs`
 
 SOURCES=src/*.cpp src/*.o
