@@ -2,33 +2,9 @@
 #include <SDL2/SDL.h>
 
 #include "ConwayGrid.hpp"
+#include "Viewport.hpp"
 
 using namespace std;
-
-void draw_grid_to_surface(SDL_Renderer *renderer, ConwayGrid *grid) {
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer);
-
-    for (int y = 0; y < grid->height; y++) {
-        for (int x = 0; x < grid->width; x++) {
-            if (grid->cell_alive_at(x, y)) {
-                SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-
-                SDL_Rect rectangle = {
-                    .x = x * grid->cell_width,
-                    .y = y * grid->cell_height,
-                    .w = grid->cell_width - 1,
-                    .h = grid->cell_height - 1
-                };
-                SDL_RenderFillRect(renderer, &rectangle);
-            } else {
-                // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-            }
-
-        }
-    }
-    SDL_RenderPresent(renderer);
-}
 
 int main(int argc, char** argv) {
     ConwayGrid grid;
@@ -37,8 +13,11 @@ int main(int argc, char** argv) {
     } else {
         grid.load_from_file("gosper.cwy");
     }
-
     grid.run();
+
+    Viewport viewport(4 * grid.width, 4 * grid.height,
+                        4 * grid.width / 2, 4 * grid.height / 2,
+                        1);
 
     int rc = SDL_Init(SDL_INIT_VIDEO);
 
@@ -47,7 +26,7 @@ int main(int argc, char** argv) {
     }
 
     SDL_Window *window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                        grid.cell_width * grid.width, grid.cell_height * grid.height,
+                                        viewport.get_width(), viewport.get_height(),
                                         SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
     if (window == NULL) {
         throw exception();
@@ -59,7 +38,7 @@ int main(int argc, char** argv) {
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    draw_grid_to_surface(renderer, &grid);
+    viewport.render_grid(renderer, &grid);
     SDL_UpdateWindowSurface(window);
 
     SDL_Event e;
@@ -79,12 +58,22 @@ int main(int argc, char** argv) {
                         break;
                     case SDLK_p:
                         grid.pause();
-                        break;        
+                        break;  
+                    case SDLK_PLUS:
+                    case SDLK_EQUALS:
+                        viewport.zoom_in();
+                        break;
+                    case SDLK_MINUS:
+                        viewport.zoom_out();
+                        break;      
                 }
             }
             if (e.type == SDL_MOUSEBUTTONUP) {
-                int cell_x = e.button.x / grid.cell_width;
-                int cell_y = e.button.y / grid.cell_height;
+                // TODO this logic really should be a method on the viewport
+                int cell_x;
+                int cell_y;
+
+                viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, &cell_x, &cell_y);
 
                 grid.invert_cell(cell_x, cell_y);
             }
@@ -94,7 +83,7 @@ int main(int argc, char** argv) {
         grid.step();
         Uint32 time_after_step_before_draw = SDL_GetTicks();
         // cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
-        draw_grid_to_surface(renderer, &grid);
+        viewport.render_grid(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         Uint32 time_after_draw = SDL_GetTicks();
         // cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;

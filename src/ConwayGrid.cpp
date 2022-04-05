@@ -15,8 +15,6 @@ void ConwayGrid::init_to_blank() {
     next_grid = grid2;
     width = GRID_WIDTH;
     height = GRID_HEIGHT;
-    cell_width = CELL_WIDTH;
-    cell_height = CELL_HEIGHT;
     running = false;
 
     memset(this->grid1, 0, sizeof(grid1));
@@ -131,11 +129,6 @@ void ConwayGrid::run() {
 
 void ConwayGrid::pause() {
     running = false;
-}
-
-void ConwayGrid::screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y) {
-    *grid_x = x / cell_width;
-    *grid_y = y / cell_height;
 }
 
 void ConwayGrid::invert_cell(int grid_x, int grid_y) {

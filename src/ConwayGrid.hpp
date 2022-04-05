@@ -2,10 +2,8 @@
 #ifndef CONWAY_GRID_H
 #define CONWAY_GRID_H
 
-#define GRID_WIDTH 840
-#define GRID_HEIGHT 510
-#define CELL_WIDTH 2
-#define CELL_HEIGHT 2
+#define GRID_WIDTH 320
+#define GRID_HEIGHT 160
 
 #define MAX_LINE_LENGTH 1000
 
@@ -13,8 +11,6 @@ class ConwayGrid {
 public:
     int width = GRID_WIDTH;
     int height = GRID_HEIGHT;
-    int cell_width;
-    int cell_height;
     bool running;
     int generation = 0;
 
