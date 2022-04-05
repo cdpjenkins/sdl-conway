@@ -45,38 +45,42 @@ int main(int argc, char** argv) {
     bool quit = false;
     while (!quit){
         while (SDL_PollEvent(&e)){
-            if (e.type == SDL_QUIT) {
-                quit = true;
-            }
-            if (e.type == SDL_KEYDOWN) {
-                switch(e.key.keysym.sym) {
-                    case SDLK_q:
-                        quit = true;
-                        break;
-                    case SDLK_r:
-                        grid.run();
-                        break;
-                    case SDLK_p:
-                        grid.pause();
-                        break;  
-                    case SDLK_PLUS:
-                    case SDLK_EQUALS:
-                        viewport.zoom_in();
-                        break;
-                    case SDLK_MINUS:
-                        viewport.zoom_out();
-                        break;      
-                }
-            }
-            if (e.type == SDL_MOUSEBUTTONUP) {
-                // TODO this logic really should be a method on the viewport
-                int cell_x;
-                int cell_y;
+            switch (e.type) {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                case SDL_KEYDOWN:
+                    switch(e.key.keysym.sym) {
+                        case SDLK_q:
+                            quit = true;
+                            break;
+                        case SDLK_r:
+                            grid.run();
+                            break;
+                        case SDLK_p:
+                            grid.pause();
+                            break;  
+                        case SDLK_PLUS:
+                        case SDLK_EQUALS:
+                            viewport.zoom_in();
+                            break;
+                        case SDLK_MINUS:
+                            viewport.zoom_out();
+                            break;      
+                    }
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    int cell_x;
+                    int cell_y;
 
-                viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, &cell_x, &cell_y);
+                    // TODO don't do this the C way...
+                    viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, &cell_x, &cell_y);
 
-                grid.invert_cell(cell_x, cell_y);
+                    grid.invert_cell(cell_x, cell_y);
+                    break;
+
             }
+
         }
 
         Uint32 time_before_step = SDL_GetTicks();
