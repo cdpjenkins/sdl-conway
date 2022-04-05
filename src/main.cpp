@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
                     float dDist = e.mgesture.dDist;
 
                     cout << "pinch " << dDist << endl;
-                    viewport.adjust_zoom(dDist * 10);
+                    viewport.adjust_zoom(dDist * 24);
                     break;
             }
 
