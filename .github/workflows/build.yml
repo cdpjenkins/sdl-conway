@@ -1,0 +1,25 @@
+name: SDL Conway
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Install packages
+      run: |
+        sudo apt install cmake libsdl2-dev libsdl2-image-dev
+    - name: Build binary
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+    - uses: actions/upload-artifact@v3
+      with:
+        name: executable
+        path: build/mandelbrot
