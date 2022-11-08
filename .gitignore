@@ -1,3 +1,4 @@
 sdl-conway
 .vscode/
 *.o
+dist/
