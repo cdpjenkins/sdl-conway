@@ -2,3 +2,4 @@ sdl-conway
 .vscode/
 *.o
 dist/
+build/
