@@ -17,3 +17,16 @@ add_executable(sdl-conway
 )
 
 target_link_libraries(sdl-conway ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+
+file(GLOB GRIDS ${PROJECT_SOURCE_DIR}/grids/*.cwy)
+file(
+    COPY ${GRIDS}
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+file(GLOB INSTALLABLE_GRIDS ${CMAKE_CURRENT_BINARY_DIR}/*.cwy)
+
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist)
+install(
+    FILES ${INSTALLABLE_GRIDS} sdl-conway
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/dist
+)

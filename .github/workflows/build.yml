@@ -19,7 +19,8 @@ jobs:
         cd build
         cmake ..
         cmake --build .
+        cmake --install .
     - uses: actions/upload-artifact@v3
       with:
         name: executable
-        path: build/sdl-conway
+        path: build/sdl-conway/dist
