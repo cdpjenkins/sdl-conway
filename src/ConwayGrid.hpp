@@ -71,7 +71,7 @@ public:
 
         fp = fopen(filename, "w");
         if (!fp) {
-            cerr << "Failed to open " << filename << "for writing" << endl;
+            fprintf(stderr, "Failed to open %s for writing\n", filename);
             perror("Error");
             goto close_file;
         }
