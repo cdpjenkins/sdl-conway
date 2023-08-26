@@ -1,5 +1,7 @@
 #include <iostream>
+#include <chrono>
 #include <cmath>
+
 #include <SDL2/SDL.h>
 
 #include "Grid.hpp"
@@ -89,17 +91,20 @@ int main(int argc, char** argv) {
                     viewport.adjust_zoom(dDist * 24);
                     break;
             }
-
         }
 
-        Uint32 time_before_step = SDL_GetTicks();
+        auto time_before_step = chrono::steady_clock::now();
         grid.step();
-        Uint32 time_after_step_before_draw = SDL_GetTicks();
-        cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
+        auto time_after_step_before_draw = chrono::steady_clock::now();
+        cout << "Time to step: " <<
+                chrono::duration_cast<chrono::microseconds>(time_after_step_before_draw - time_before_step).count()
+                << "μs" << endl;
         viewport.render_grid(renderer, &grid);
         SDL_UpdateWindowSurface(window);
-        Uint32 time_after_draw = SDL_GetTicks();
-        cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
+        auto time_after_draw = chrono::steady_clock::now();
+        cout << "Time to draw: " <<
+                chrono::duration_cast<chrono::microseconds>(time_after_draw - time_after_step_before_draw).count()
+                << "μs" << endl;
     }
 
     return 0;
