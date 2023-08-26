@@ -71,9 +71,9 @@ public:
 
         fp = fopen(filename, "w");
         if (!fp) {
-            printf("Failed to open %s for writing\n", filename);
-            perror("arghghghgh");
-            exit(1);
+            cerr << "Failed to open " << filename << "for writing" << endl;
+            perror("Error");
+            goto close_file;
         }
 
         for (y = 0; y < height; y++) {
@@ -86,7 +86,7 @@ public:
             }
             fprintf(fp, "\n");
         }
-
+close_file:
         fclose(fp);
     }
 

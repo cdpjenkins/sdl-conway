@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     SDL_Window *window = SDL_CreateWindow("SDL Conway for Mac!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                         viewport.get_width(), viewport.get_height(),
                                         SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
-    if (window == NULL) {
+    if (window == nullptr) {
         throw exception();
     }
 
@@ -94,15 +94,15 @@ int main(int argc, char** argv) {
         auto time_before_step = chrono::steady_clock::now();
         grid.step();
         auto time_after_step_before_draw = chrono::steady_clock::now();
-        cout << "Time to step: " <<
-                chrono::duration_cast<chrono::microseconds>(time_after_step_before_draw - time_before_step).count()
-                << "μs" << endl;
+//        cout << "Time to step: " <<
+//                chrono::duration_cast<chrono::microseconds>(time_after_step_before_draw - time_before_step).count()
+//                << "μs" << endl;
         viewport.render_grid(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         auto time_after_draw = chrono::steady_clock::now();
-        cout << "Time to draw: " <<
-                chrono::duration_cast<chrono::microseconds>(time_after_draw - time_after_step_before_draw).count()
-                << "μs" << endl;
+//        cout << "Time to draw: " <<
+//                chrono::duration_cast<chrono::microseconds>(time_after_draw - time_after_step_before_draw).count()
+//                << "μs" << endl;
     }
 
     return 0;
