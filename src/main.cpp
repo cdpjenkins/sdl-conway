@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     }
     grid.run();
 
-    Viewport viewport(&grid, 1);
+    Viewport viewport(&grid, 2);
 
     SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);
