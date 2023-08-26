@@ -7,7 +7,7 @@
 
 class Viewport {
 public:
-    Viewport(float cell_size);
+    explicit Viewport(Grid *grid, float cell_size);
 
     void render_grid(SDL_Renderer *renderer, Grid *grid) const;
     void zoom_in();
@@ -19,8 +19,9 @@ public:
 
 private:
     int width, height;
-
     float cell_size;
+
+    Grid* grid;
 };
 
 #endif // VIEWPORT_HPP

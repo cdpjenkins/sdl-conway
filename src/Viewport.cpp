@@ -4,11 +4,11 @@
 
 using namespace std;
 
-Viewport::Viewport(float cell_size)
-    :   width{static_cast<int>(Grid::width * cell_size)},
-        height{static_cast<int>(Grid::height * cell_size)},
-        cell_size{cell_size}
-{ }
+Viewport::Viewport(Grid *grid, float cell_size)
+    : width{static_cast<int>(Grid::width * cell_size)},
+      height{static_cast<int>(Grid::height * cell_size)},
+      cell_size{cell_size},
+      grid(grid) { }
 
 void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) const {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);

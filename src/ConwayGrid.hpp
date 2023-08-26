@@ -110,10 +110,9 @@ close_file:
             CellArray cell_array_copy;
             memcpy(&cell_array_copy, &cell_array, sizeof(cell_array));
 
-            for (int index = 0; index < width*height; index += 4) {
-                uint32_t* long_word_ptr = reinterpret_cast<uint32_t*>(&cell_array_copy[index]);
-                if (*long_word_ptr) {
-                    for (int i = 0; i < 4; i++) {
+            for (int index = 0; index < width*height; index += 8) {
+                if (*reinterpret_cast<uint64_t *>(&cell_array_copy[index])) {
+                    for (int i = 0; i < 8; i++) {
                         uint8_t &current_value = cell_array_copy[index + i];
                         if (current_value != 0) {
                             if (current_value == 0x03) {
