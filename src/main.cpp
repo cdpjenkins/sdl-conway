@@ -1,6 +1,5 @@
 #include <iostream>
 #include <chrono>
-#include <cmath>
 
 #include <SDL2/SDL.h>
 
@@ -18,8 +17,7 @@ int main(int argc, char** argv) {
     }
     grid.run();
 
-    Viewport viewport(Grid::width, Grid::height, 2,
-                      1);
+    Viewport viewport(2);
 
     SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);

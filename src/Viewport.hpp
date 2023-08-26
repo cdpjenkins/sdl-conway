@@ -7,19 +7,18 @@
 
 class Viewport {
 public:
-    Viewport(float width, float height, float cell_size, float zoom);
+    Viewport(float cell_size);
 
-    void render_grid(SDL_Renderer *renderer, Grid *grid);
+    void render_grid(SDL_Renderer *renderer, Grid *grid) const;
     void zoom_in();
     void zoom_out();
     void adjust_zoom(float dDist);
-    float get_width();
-    float get_height();
-    void screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y);  
+    float get_width() const;
+    float get_height() const;
+    void screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y) const;
 
 private:
     float width, height;
-    float zoom;
 
     float cell_size;
 };
