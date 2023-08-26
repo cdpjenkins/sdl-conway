@@ -3,3 +3,6 @@ sdl-conway
 *.o
 dist/
 build/
+.idea/
+cmake-build-debug/
+
