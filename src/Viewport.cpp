@@ -4,15 +4,13 @@
 
 using namespace std;
 
-Viewport::Viewport(float width, float height, float centre_x, float centre_y, float zoom) {
-    this->width = width;
-    this->height = height;
-    this->centre_x = centre_x;
-    this->centre_y = centre_y;
-    this->zoom = zoom;
-}
+Viewport::Viewport(float width, float height, float cell_size, float zoom)
+    :   width{width * cell_size},
+        height{height * cell_size},
+        cell_size{cell_size},
+        zoom{zoom} { }
 
-void Viewport::render_grid(SDL_Renderer *renderer, ConwayGrid *grid) {
+void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 

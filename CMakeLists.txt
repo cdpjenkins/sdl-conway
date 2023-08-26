@@ -11,9 +11,9 @@ find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
 add_executable(sdl-conway
-    src/ConwayGrid.cpp
-    src/Viewport.cpp
-    src/main.cpp
+        src/Grid.hpp
+        src/Viewport.cpp
+        src/main.cpp
 )
 
 target_link_libraries(sdl-conway ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

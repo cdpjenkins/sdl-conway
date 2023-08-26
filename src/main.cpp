@@ -2,13 +2,13 @@
 #include <cmath>
 #include <SDL2/SDL.h>
 
-#include "ConwayGrid.hpp"
+#include "Grid.hpp"
 #include "Viewport.hpp"
 
 using namespace std;
 
 int main(int argc, char** argv) {
-    ConwayGrid grid;
+    Grid grid;
     if (argc > 1) {
         grid.load_from_file(argv[1]);
     } else {
@@ -16,9 +16,8 @@ int main(int argc, char** argv) {
     }
     grid.run();
 
-    Viewport viewport(4 * grid.width, 4 * grid.height,
-                        4 * grid.width / 2, 4 * grid.height / 2,
-                        1);
+    Viewport viewport(Grid::width, Grid::height, 2,
+                      1);
 
     SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);
@@ -27,7 +26,7 @@ int main(int argc, char** argv) {
         throw exception();
     }
 
-    SDL_Window *window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    SDL_Window *window = SDL_CreateWindow("SDL Conway for Mac!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                         viewport.get_width(), viewport.get_height(),
                                         SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
     if (window == NULL) {
@@ -96,11 +95,11 @@ int main(int argc, char** argv) {
         Uint32 time_before_step = SDL_GetTicks();
         grid.step();
         Uint32 time_after_step_before_draw = SDL_GetTicks();
-        // cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
+        cout << "Time to step: " << (time_after_step_before_draw - time_before_step) << endl;
         viewport.render_grid(renderer, &grid);
         SDL_UpdateWindowSurface(window);
         Uint32 time_after_draw = SDL_GetTicks();
-        // cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
+        cout << "Time to draw: " << (time_after_draw - time_after_step_before_draw) << endl;
     }
 
     return 0;

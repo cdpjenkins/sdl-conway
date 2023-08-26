@@ -3,13 +3,13 @@
 
 #include <SDL2/SDL.h>
 
-#include "ConwayGrid.hpp"
+#include "Grid.hpp"
 
 class Viewport {
 public:
-    Viewport(float width, float height, float centre_x, float centre_y, float zoom);
+    Viewport(float width, float height, float cell_size, float zoom);
 
-    void render_grid(SDL_Renderer *renderer, ConwayGrid *grid);
+    void render_grid(SDL_Renderer *renderer, Grid *grid);
     void zoom_in();
     void zoom_out();
     void adjust_zoom(float dDist);
@@ -19,10 +19,9 @@ public:
 
 private:
     float width, height;
-    float centre_x, centre_y;
     float zoom;
 
-    float cell_size = 4;
+    float cell_size;
 };
 
 #endif // VIEWPORT_HPP
