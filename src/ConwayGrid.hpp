@@ -6,6 +6,9 @@
 using namespace std;
 #include <cstring>
 
+static constexpr uint8_t CELL_ALIVE_BIT = 0x10;
+static constexpr uint8_t CELL_BUFFER_BIT = 0x20;
+
 template<int GRID_WIDTH, int GRID_HEIGHT>
 class ConwayGrid {
 public:
@@ -26,13 +29,13 @@ public:
         cell_array.fill(0x00);
 
         for (int x = 0; x < width; x++) {
-            cell_array[grid_index(x, 0)] = 0x20;
-            cell_array[grid_index(x, height - 1)] = 0x20;
+            cell_array[grid_index(x, 0)] = CELL_BUFFER_BIT;
+            cell_array[grid_index(x, height - 1)] = CELL_BUFFER_BIT;
         }
 
         for (int y = 0; y < height; y++) {
-            cell_array[grid_index(0, y)] = 0x20;
-            cell_array[grid_index(width - 1 , y)] = 0x20;
+            cell_array[grid_index(0, y)] = CELL_BUFFER_BIT;
+            cell_array[grid_index(width - 1 , y)] = CELL_BUFFER_BIT;
         }
     }
 
@@ -115,9 +118,11 @@ close_file:
                     for (int i = 0; i < 8; i++) {
                         uint8_t &current_value = cell_array_copy[index + i];
                         if (current_value != 0) {
-                            if (current_value == 0x03) {
+                            if (current_value == 3) {
                                 transition_cell_from_dead_to_alive(index + i);
-                            } else if ((current_value & 0x10) && (current_value != 0x12) && (current_value != 0x13)) {
+                            } else if ((current_value & CELL_ALIVE_BIT)
+                                        && (current_value != (CELL_ALIVE_BIT | 2))
+                                        && (current_value != (CELL_ALIVE_BIT | 3))) {
                                 transition_cell_from_alive_to_dead(index + i);
                             }
                         }
@@ -151,11 +156,11 @@ close_file:
     }
 
     inline bool cell_alive_at(int x, int y) {
-        return cell_array[grid_index(x, y)] & 0x10;
+        return cell_array[grid_index(x, y)] & CELL_ALIVE_BIT;
     }
 
     inline bool cell_is_buffer(int x, int y) {
-        return cell_array[grid_index(x, y)] & 0x20;
+        return cell_array[grid_index(x, y)] & CELL_BUFFER_BIT;
     }
 
 private:
@@ -164,7 +169,7 @@ private:
     CellArray cell_array;
 
     inline void transition_cell_from_dead_to_alive(int index) {
-        cell_array[index] |= 0x10;
+        cell_array[index] |= CELL_ALIVE_BIT;
 
         cell_array[index - GRID_WIDTH - 1]++;
         cell_array[index - GRID_WIDTH]++;
@@ -181,7 +186,7 @@ private:
     }
 
     inline void transition_cell_from_alive_to_dead(int index) {
-        cell_array[index] = cell_array[index] & (~0x10);
+        cell_array[index] = cell_array[index] & (~CELL_ALIVE_BIT);
 
         cell_array[index - GRID_WIDTH - 1]--;
         cell_array[index - GRID_WIDTH]--;
