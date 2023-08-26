@@ -3,6 +3,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 using namespace std;
 #include <cstring>
 
@@ -16,11 +17,20 @@ public:
     static constexpr int height = GRID_HEIGHT;
     bool running;
 
+    array<uint32_t, GRID_WIDTH * GRID_HEIGHT> rendered_cells;
+
+private:
+    typedef array<uint8_t, GRID_WIDTH * GRID_HEIGHT> CellArray;
+    CellArray cell_array;
+
+public:
     ConwayGrid() :
             running(false),
-            cell_array(){
+            cell_array() {
 
         init_to_blank();
+
+        rendered_cells.fill(0xFFFFFFFF);
     }
 
     void init_to_blank() {
@@ -61,6 +71,7 @@ public:
             for (ptr = row_string, x = 0; ptr != nullptr && x < width; ptr++, x++) {
                 if (*ptr == 'x') {
                     transition_cell_from_dead_to_alive(x, y);
+                    rendered_cells[y * width + x] = 0xFF000000;
                 }
             }
         }
@@ -120,10 +131,12 @@ close_file:
                         if (current_value != 0) {
                             if (current_value == 3) {
                                 transition_cell_from_dead_to_alive(index + i);
+                                rendered_cells[index + i] = 0xFF000000;
                             } else if ((current_value & CELL_ALIVE_BIT)
                                         && (current_value != (CELL_ALIVE_BIT | 2))
                                         && (current_value != (CELL_ALIVE_BIT | 3))) {
                                 transition_cell_from_alive_to_dead(index + i);
+                                rendered_cells[index + i] = 0xFFFFFFFF;
                             }
                         }
                     }
@@ -164,10 +177,6 @@ close_file:
     }
 
 private:
-    typedef array<uint8_t, GRID_WIDTH * GRID_HEIGHT> CellArray;
-
-    CellArray cell_array;
-
     inline void transition_cell_from_dead_to_alive(int index) {
         cell_array[index] |= CELL_ALIVE_BIT;
 

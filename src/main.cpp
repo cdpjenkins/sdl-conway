@@ -8,6 +8,23 @@
 
 using namespace std;
 
+class SDLTextureWrapper {
+public:
+    SDLTextureWrapper(SDL_Renderer *renderer, int width, int height) :
+            texture(SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, width, height))
+    {
+        if (texture == nullptr) {
+            cout << "SDL_CreateTexture " << " " << SDL_GetError() <<  endl;
+        }
+    }
+
+    ~SDLTextureWrapper() {
+        SDL_DestroyTexture(texture);
+    }
+
+    SDL_Texture *texture;
+};
+
 int main(int argc, char** argv) {
     Grid grid;
     if (argc > 1) {
@@ -17,7 +34,7 @@ int main(int argc, char** argv) {
     }
     grid.run();
 
-    Viewport viewport(&grid, 2);
+    Viewport viewport(&grid, 1);
 
     SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);
@@ -39,8 +56,7 @@ int main(int argc, char** argv) {
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    viewport.render_grid(renderer, &grid);
-    SDL_UpdateWindowSurface(window);
+    SDLTextureWrapper texture_wrapper{renderer, Grid::width, Grid::height};
 
     SDL_Event e;
     bool quit = false;
@@ -97,12 +113,36 @@ int main(int argc, char** argv) {
         cout << "Time to step: " <<
                 chrono::duration_cast<chrono::microseconds>(time_after_step_before_draw - time_before_step).count()
                 << "μs" << endl;
-        viewport.render_grid(renderer, &grid);
-        SDL_UpdateWindowSurface(window);
+
+//        viewport.render_grid(renderer, &grid);
+
+        int texture_pitch;
+        void *texture_pixels;
+        if (SDL_LockTexture(texture_wrapper.texture, nullptr, &texture_pixels, &texture_pitch) != 0) {
+            SDL_Log("Unable to lock texture: %s", SDL_GetError());
+        } else {
+            memcpy(texture_pixels, grid.rendered_cells.data(), texture_pitch * Grid::height);
+        }
+        SDL_UnlockTexture(texture_wrapper.texture);
+
+        SDL_Rect src_rect = { 0, 0, Grid::width, Grid::height };
+        SDL_Rect dest_rect = { 0, 0, viewport.width, viewport.height };
+//        SDL_Rect dest_rect = { 0, 0, Grid::width, Grid::height };
+
+        rc = SDL_RenderCopy(renderer, texture_wrapper.texture, &src_rect, &dest_rect);
+        if (rc != 0) {
+            throw runtime_error("SDL_RenderCopy failed with "s + SDL_GetError());
+        }
+
+        SDL_RenderPresent(renderer);
+//        SDL_UpdateWindowSurface(window);
+
         auto time_after_draw = chrono::steady_clock::now();
         cout << "Time to draw: " <<
                 chrono::duration_cast<chrono::microseconds>(time_after_draw - time_after_step_before_draw).count()
                 << "μs" << endl;
+
+//        exit(0);
     }
 
     return 0;

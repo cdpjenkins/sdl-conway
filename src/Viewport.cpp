@@ -8,7 +8,7 @@ Viewport::Viewport(Grid *grid, float cell_size)
     : width{static_cast<int>(Grid::width * cell_size)},
       height{static_cast<int>(Grid::height * cell_size)},
       cell_size{cell_size},
-      grid(grid) { }
+      grid(grid) {}
 
 void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) const {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -32,6 +32,32 @@ void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) const {
         }
     }
     SDL_RenderPresent(renderer);
+}
+
+void Viewport::render_grid_delta(SDL_Renderer *renderer, Grid *grid) const {
+//
+//    for (auto & cell : grid->updated_indices) {
+////        cout << "(" << cell.x << "," << cell.y << "): " << cell.alive << " ";
+//
+//        float x = static_cast<float>(cell.x) * cell_size;
+//        float y = static_cast<float>(cell.y) * cell_size;
+//
+//        if (cell.alive) {
+//            SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+//        } else {
+//            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+//        }
+//
+//        SDL_Rect rectangle = {
+//                .x = (int)x,
+//                .y = (int)y,
+//                .w = (int)(cell_size - 1),
+//                .h = (int)(cell_size - 1)
+//        };
+//        SDL_RenderFillRect(renderer, &rectangle);
+//
+//    }
+////    cout << endl;
 }
 
 void Viewport::zoom_in() {
