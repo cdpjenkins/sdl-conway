@@ -13,12 +13,12 @@ public:
     void zoom_in();
     void zoom_out();
     void adjust_zoom(float dDist);
-    float get_width() const;
-    float get_height() const;
+    int get_width() const;
+    int get_height() const;
     void screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y) const;
 
 private:
-    float width, height;
+    int width, height;
 
     float cell_size;
 };

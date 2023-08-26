@@ -5,8 +5,8 @@
 using namespace std;
 
 Viewport::Viewport(float cell_size)
-    :   width{Grid::width * cell_size},
-        height{Grid::height * cell_size},
+    :   width{static_cast<int>(Grid::width * cell_size)},
+        height{static_cast<int>(Grid::height * cell_size)},
         cell_size{cell_size}
 { }
 
@@ -51,11 +51,11 @@ void Viewport::adjust_zoom(float dDist) {
     cout << cell_size << endl;
 }
 
-float Viewport::get_width() const {
+int Viewport::get_width() const {
     return width;
 }
 
-float Viewport::get_height() const {
+int Viewport::get_height() const {
     return height;
 }
 
