@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     }
     grid.run();
 
-    Viewport viewport(&grid, 2);
+    Viewport viewport(2);
 
     SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
     int rc = SDL_Init(SDL_INIT_VIDEO);
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    viewport.render_grid(renderer, &grid);
+    viewport.render_grid(renderer, grid);
     SDL_UpdateWindowSurface(window);
 
     SDL_Event e;
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
                     int cell_y;
 
                     // TODO don't do this the C way...
-                    viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, &cell_x, &cell_y);
+                    viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, cell_x, cell_y);
 
                     grid.invert_cell(cell_x, cell_y);
                     break;
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
         cout << "Time to step: " <<
                 chrono::duration_cast<chrono::microseconds>(time_after_step_before_draw - time_before_step).count()
                 << "μs" << endl;
-        viewport.render_grid(renderer, &grid);
+        viewport.render_grid(renderer, grid);
         SDL_UpdateWindowSurface(window);
         auto time_after_draw = chrono::steady_clock::now();
         cout << "Time to draw: " <<

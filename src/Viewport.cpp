@@ -4,13 +4,12 @@
 
 using namespace std;
 
-Viewport::Viewport(Grid *grid, float cell_size)
+Viewport::Viewport(float cell_size)
     : width{static_cast<int>(Grid::width * cell_size)},
       height{static_cast<int>(Grid::height * cell_size)},
-      cell_size{cell_size},
-      grid(grid) { }
+      cell_size{cell_size} { }
 
-void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) const {
+void Viewport::render_grid(SDL_Renderer *renderer, Grid &grid) const {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 
@@ -18,7 +17,7 @@ void Viewport::render_grid(SDL_Renderer *renderer, Grid *grid) const {
     for (int y = 0; y < Grid::height; y++, sy += cell_size) {
         float sx = 0;
         for (int x = 0; x < Grid::width; x++, sx += cell_size) {
-            if (grid->cell_alive_at(x, y)) {
+            if (grid.cell_alive_at(x, y)) {
                 SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
                 SDL_Rect rectangle = {
@@ -59,7 +58,7 @@ int Viewport::get_height() const {
     return height;
 }
 
-void Viewport::screen_coords_to_grid_coords(int x, int y, int *grid_x, int *grid_y) const {
-    *grid_x = static_cast<int>(static_cast<float>(x) / cell_size);
-    *grid_y = static_cast<int>(static_cast<float>(y) / cell_size);
+void Viewport::screen_coords_to_grid_coords(int x, int y, int &grid_x, int &grid_y) const {
+    grid_x = static_cast<int>(static_cast<float>(x) / cell_size);
+    grid_y = static_cast<int>(static_cast<float>(y) / cell_size);
 }
