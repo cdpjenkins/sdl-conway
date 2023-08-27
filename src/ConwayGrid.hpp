@@ -140,11 +140,6 @@ close_file:
         running = false;
     }
 
-    void screen_coords_to_grid_coords(int x, int y, int cell_size, int &out_grid_x, int &out_grid_y) const {
-        out_grid_x = x / cell_size;
-        out_grid_y = y / cell_size;
-    }
-
     void invert_cell(int grid_x, int grid_y) {
         if (!running) {
             if (cell_alive_at(grid_x, grid_y)) {

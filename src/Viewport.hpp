@@ -13,14 +13,13 @@ public:
     void zoom_in();
     void zoom_out();
     void adjust_zoom(float dDist);
-    int get_width() const;
-    int get_height() const;
+    [[nodiscard]]int get_width() const;
+    [[nodiscard]] int get_height() const;
     void screen_coords_to_grid_coords(int x, int y, int &grid_x, int &grid_y) const;
 
 private:
     int width, height;
     float cell_size;
-
 };
 
 #endif // VIEWPORT_HPP
