@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
         throw exception();
     }
 
-    SDL_Window *window = SDL_CreateWindow("SDL Conway for Mac!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    SDL_Window *window = SDL_CreateWindow("SDL Conway!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                         viewport.get_width(), viewport.get_height(),
                                         SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
     if (window == nullptr) {
