@@ -77,7 +77,6 @@ int main(int argc, char** argv) {
                     int cell_x;
                     int cell_y;
 
-                    // TODO don't do this the C way...
                     viewport.screen_coords_to_grid_coords(e.button.x, e.button.y, cell_x, cell_y);
 
                     grid.invert_cell(cell_x, cell_y);
